@@ -3,12 +3,15 @@
 require_relative "menuable/version"
 require "active_support/all"
 
+#
+# Menuable is a module for dynamically generating sidemenus
+#
 module Menuable
   extend ActiveSupport::Concern
 
   class_methods do
-    def resource(resource_name, **options, &block)
-      resources(resource_name, single: true, **options, &block)
+    def resource(resource_name, **options, &)
+      resources(resource_name, single: true, **options, &)
     end
 
     def resources(resource_name, single: false, **options, &block)
@@ -27,6 +30,9 @@ module Menuable
     end
   end
 
+  #
+  # Value to set from controller
+  #
   class MenuDefinition
     class_attribute :options
     class_attribute :resource_name
@@ -52,6 +58,10 @@ module Menuable
     end
   end
 
+  #
+  # A class for binding with view_content to convert the settings defined in yaml
+  # into something that can actually be used
+  #
   class MenuContext
     attr_reader :context
 
@@ -89,7 +99,7 @@ module Menuable
       path || config[:path] || "/"
     end
 
-    def active?(menu)
+    def active?(menu) # rubocop:todo Metrics/MethodLength
       case menu
       in items:
         items.any? do |item|
@@ -115,6 +125,9 @@ module Menuable
     end
   end
 
+  #
+  # The actual state of the definition body that reads YAML
+  #
   class Menu
     def initialize(namespace, path) # rubocop:todo Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
       extract_namespace = lambda do |name|

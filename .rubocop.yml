@@ -1,5 +1,11 @@
+require:
+  - rubocop-performance
+  - rubocop-rake
+  - rubocop-rspec
+
 AllCops:
   TargetRubyVersion: 3.2.2
+  NewCops: enable
 
 Style/StringLiterals:
   Enabled: true
